@@ -29,17 +29,43 @@ async function run() {
     await client.connect();
 
 
+    const usersCollection = client.db('sportsDb').collection('users')
     const instructorsCollection = client.db('sportsDb').collection('instructors')
     const reviewsCollection = client.db('sportsDb').collection('reviews')
+    const classesCollection = client.db('sportsDb').collection('classes')
+
+
+    app.get('/users', async (req, res) => {
+      const result = await usersCollection.find().toArray()
+      res.send(result)
+    })
+
+    app.post('/users', async (req, res) => {
+      const user = req.body;
+      const query = {email: user.email}
+      const previousUser = await usersCollection.findOne(query)
+      if (previousUser) {
+        return res.send({message: 'User already exist!!'})
+      }
+      const result = await usersCollection.insertOne(user)
+      res.send(result)
+    })
 
       app.get('/instructors', async (req, res) => {
           const result = await instructorsCollection.find().toArray()
           res.send(result)
       })
 
-      app.get('/', async (req, res) => {
+      app.get('/reviews', async (req, res) => {
           const result = await reviewsCollection.find().toArray()
           res.send(result)
+      })
+
+      //classes collection
+    app.post('/classes', async (req, res) => {
+      const item = req.body;
+      const result = await classesCollection.insertOne(item)
+      res.send(result)
       })
 
 
