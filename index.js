@@ -92,7 +92,7 @@ async function run() {
       res.send(result)
     })
 
-      app.get('/instructors', verifyInstructor, async (req, res) => {
+      app.get('/instructors', async (req, res) => {
           const result = await instructorsCollection.find().toArray()
           res.send(result)
       })
@@ -102,7 +102,7 @@ async function run() {
           res.send(result)
       })
 
-    app.get('/users/admin/:email', verifyJWT,verifyAdmin, async (req, res) => {
+    app.get('/users/admin/:email', verifyJWT, async (req, res) => {
       const email = req.params.email;
 
       if (req.decoded.email !== email) {
