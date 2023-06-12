@@ -155,6 +155,12 @@ async function run() {
 
 
       //classes collection
+
+    app.get('/menu', async (req, res) => {
+        const result = await classesCollection.find().toArray()
+      res.send(result);
+      })
+
     app.post('/classes', async (req, res) => {
       const item = req.body;
       const result = await classesCollection.insertOne(item)
